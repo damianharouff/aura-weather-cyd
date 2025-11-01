@@ -6,19 +6,19 @@
 #include <lvgl.h>
 #include <TFT_eSPI.h>
 #include <XPT2046_Touchscreen.h>
-#include <Preferences.h>
-#include "esp_system.h"
-#include "translations.h"
+  #include <Preferences.h>
+  #include "esp_system.h"
+    #include "translations.h"
 
-#define XPT2046_IRQ 36   // T_IRQ
-#define XPT2046_MOSI 32  // T_DIN
-#define XPT2046_MISO 39  // T_OUT
-#define XPT2046_CLK 25   // T_CLK
-#define XPT2046_CS 33    // T_CS
-#define LCD_BACKLIGHT_PIN 21
-#define SCREEN_WIDTH 240
-#define SCREEN_HEIGHT 320
-#define DRAW_BUF_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
+  #define XPT2046_IRQ 36   // T_IRQ
+  #define XPT2046_MOSI 32  // T_DIN
+  #define XPT2046_MISO 39  // T_OUT
+  #define XPT2046_CLK 25   // T_CLK
+  #define XPT2046_CS 33    // T_CS
+  #define LCD_BACKLIGHT_PIN 21
+  #define SCREEN_WIDTH 240
+  #define SCREEN_HEIGHT 320
+  #define DRAW_BUF_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
 
 #define LATITUDE_DEFAULT "51.5074"
 #define LONGITUDE_DEFAULT "-0.1278"
