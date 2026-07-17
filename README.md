@@ -18,7 +18,8 @@ The icons are not included in that license. See "Thanks" below for details on th
     1. set "Tools -> Partition Scheme" to "Huge App (3MB No OTA/1MB SPIFFS)"
 1. Install the libraries below in Arduino IDE
 1. Put the source code folders that are in this folder in ~/Documents/Arduino/
-    1. Note the included config files for lvgl and TFT_eSPI need to be dropped in their respective folders
+    1. Copy the included `TFT_eSPI/User_Setup.h` into the installed TFT_eSPI library folder (`~/Documents/Arduino/libraries/TFT_eSPI/`), replacing the default one
+    1. Copy the included `lvgl/lv_conf.h` to `~/Documents/Arduino/libraries/lv_conf.h` — it must sit *next to* the lvgl library folder, not inside it
 1. Install and run
 
 ### Libraries required to compile:
@@ -28,7 +29,7 @@ The icons are not included in that license. See "Thanks" below for details on th
 - TFT_eSPI 2.5.43_
 - WifiManager 2.0.17
 - XPT2046_Touchscreen 1.4
-- lvgl 9.2.2
+- lvgl 9.5.0 (the included `lvgl/lv_conf.h` is generated from the 9.5 config template)
 
 ### Thanks & Credits
 
