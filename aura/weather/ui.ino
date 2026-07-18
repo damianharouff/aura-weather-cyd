@@ -50,6 +50,8 @@ void touchscreen_read(lv_indev_t *indev, lv_indev_data_t *data) {
   if (touchscreen.tirqTouched() && touchscreen.touched()) {
     TS_Point p = touchscreen.getPoint();
 
+    // Coordinates are in the panel's fixed orientation; LVGL applies the
+    // display rotation itself via lv_display_rotate_point()
     int x = map(p.x, 200, 3700, 1, SCREEN_WIDTH);
     int y = map(p.y, 240, 3800, 1, SCREEN_HEIGHT);
 
@@ -512,11 +514,26 @@ void create_settings_window() {
   }
   lv_obj_add_event_cb(clock_24hr_switch, settings_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
 
+  // 'Rotate display 180°' switch
+  lv_obj_t *lbl_flip = lv_label_create(cont);
+  lv_label_set_text(lbl_flip, strings->flip_display);
+  lv_obj_set_style_text_font(lbl_flip, &lv_font_montserrat_latin_12, LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_align_to(lbl_flip, lbl_u, LV_ALIGN_OUT_BOTTOM_LEFT, 0, vertical_element_spacing);
+
+  flip_switch = lv_switch_create(cont);
+  lv_obj_align_to(flip_switch, lbl_flip, LV_ALIGN_OUT_RIGHT_MID, 6, 0);
+  if (flip_display) {
+    lv_obj_add_state(flip_switch, LV_STATE_CHECKED);
+  } else {
+    lv_obj_remove_state(flip_switch, LV_STATE_CHECKED);
+  }
+  lv_obj_add_event_cb(flip_switch, settings_event_handler, LV_EVENT_VALUE_CHANGED, NULL);
+
   // Current Location label
   lv_obj_t *lbl_loc_l = lv_label_create(cont);
   lv_label_set_text(lbl_loc_l, strings->location);
   lv_obj_set_style_text_font(lbl_loc_l, &lv_font_montserrat_latin_12, LV_PART_MAIN | LV_STATE_DEFAULT);
-  lv_obj_align_to(lbl_loc_l, lbl_u, LV_ALIGN_OUT_BOTTOM_LEFT, 0, vertical_element_spacing);
+  lv_obj_align_to(lbl_loc_l, lbl_flip, LV_ALIGN_OUT_BOTTOM_LEFT, 0, vertical_element_spacing);
 
   lbl_loc = lv_label_create(cont);
   lv_label_set_text(lbl_loc, location.c_str());
@@ -604,6 +621,12 @@ static void settings_event_handler(lv_event_t *e) {
     use_night_mode = lv_obj_has_state(night_mode_switch, LV_STATE_CHECKED);
   }
 
+  if (tgt == flip_switch && code == LV_EVENT_VALUE_CHANGED) {
+    flip_display = lv_obj_has_state(flip_switch, LV_STATE_CHECKED);
+    lv_display_set_rotation(lv_display_get_default(),
+                            flip_display ? LV_DISPLAY_ROTATION_180 : LV_DISPLAY_ROTATION_0);
+  }
+
   if (tgt == language_dropdown && code == LV_EVENT_VALUE_CHANGED) {
     current_language = (Language)lv_dropdown_get_selected(language_dropdown);
     // Update the UI immediately to reflect language change
@@ -614,6 +637,7 @@ static void settings_event_handler(lv_event_t *e) {
     prefs.putBool("useFahrenheit", use_fahrenheit);
     prefs.putBool("use24Hour", use_24_hour);
     prefs.putBool("useNightMode", use_night_mode);
+    prefs.putBool("flipDisplay", flip_display);
     prefs.putUInt("language", current_language);
 
     // Recreate the main UI with the new language. lv_obj_clean() deletes every
@@ -631,6 +655,7 @@ static void settings_event_handler(lv_event_t *e) {
     prefs.putBool("useFahrenheit", use_fahrenheit);
     prefs.putBool("use24Hour", use_24_hour);
     prefs.putBool("useNightMode", use_night_mode);
+    prefs.putBool("flipDisplay", flip_display);
     prefs.putUInt("language", current_language);
 
     lv_keyboard_set_textarea(kb, nullptr);

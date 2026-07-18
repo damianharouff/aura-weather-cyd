@@ -49,6 +49,7 @@ static Preferences prefs;
 static bool use_fahrenheit = false;
 static bool use_24_hour = false; 
 static bool use_night_mode = false;
+static bool flip_display = false;
 static char latitude[16] = LATITUDE_DEFAULT;
 static char longitude[16] = LONGITUDE_DEFAULT;
 static String location = String(LOCATION_DEFAULT);
@@ -87,6 +88,7 @@ static lv_obj_t *location_win = nullptr;
 static lv_obj_t *unit_switch;
 static lv_obj_t *clock_24hr_switch;
 static lv_obj_t *night_mode_switch;
+static lv_obj_t *flip_switch;
 static lv_obj_t *language_dropdown;
 static lv_obj_t *lbl_clock;
 
@@ -196,10 +198,15 @@ void setup() {
   use_fahrenheit = prefs.getBool("useFahrenheit", false);
   location = prefs.getString("location", LOCATION_DEFAULT);
   use_night_mode = prefs.getBool("useNightMode", false);
+  flip_display = prefs.getBool("flipDisplay", false);
   display_brightness = prefs.getUInt("brightness", DEFAULT_BRIGHTNESS);
   use_24_hour = prefs.getBool("use24Hour", false);
   current_language = (Language)prefs.getUInt("language", LANG_EN);
   analogWrite(LCD_BACKLIGHT_PIN, display_brightness);
+
+  if (flip_display) {
+    lv_display_set_rotation(disp, LV_DISPLAY_ROTATION_180);
+  }
 
   // Check for Wi-Fi config and request it if not available
   WiFiManager wm;

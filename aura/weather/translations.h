@@ -42,6 +42,7 @@ struct LocalizedStrings {
   const char* language_label;
   const char* weekdays[7];
   const char* use_night_mode;
+  const char* flip_display;
 };
 
 #define DEFAULT_CAPTIVE_SSID "Aura"
@@ -93,7 +94,8 @@ static const LocalizedStrings strings_en = {
     "reconfigure Wi-Fi credentials.",
   .language_label = "Language:",
   .weekdays = {"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"},
-  .use_night_mode = "Dim screen at night"
+  .use_night_mode = "Dim screen at night",
+  .flip_display = "Rotate display 180°:"
 };
 
 static const LocalizedStrings strings_es = {
@@ -145,7 +147,8 @@ static const LocalizedStrings strings_es = {
     "credenciales Wi-Fi.",
   .language_label = "Idioma:",
   .weekdays = {"Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"},
-  .use_night_mode = "Pantalla noche"
+  .use_night_mode = "Pantalla noche",
+  .flip_display = "Girar pantalla 180°:"
 };
 
 static const LocalizedStrings strings_de = {
@@ -199,7 +202,8 @@ static const LocalizedStrings strings_de = {
     "neu zu konfigurieren.",
   .language_label = "Sprache:",
   .weekdays = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"},
-  .use_night_mode = "Nacht-Dimmen"
+  .use_night_mode = "Nacht-Dimmen",
+  .flip_display = "Display um 180° drehen:"
 };
 
 static const LocalizedStrings strings_fr = {
@@ -254,7 +258,8 @@ static const LocalizedStrings strings_fr = {
     "les identifiants Wi-Fi.",
   .language_label = "Langue:",
   .weekdays = {"Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"},
-  .use_night_mode = "Nuit écran"
+  .use_night_mode = "Nuit écran",
+  .flip_display = "Pivoter écran 180°:"
 };
 
 static const LocalizedStrings strings_tr = {
@@ -305,7 +310,8 @@ static const LocalizedStrings strings_tr = {
     "gerekecek.",
   .language_label = "Dil:",
   .weekdays = {"Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"},
-  .use_night_mode = "Gece kısık"
+  .use_night_mode = "Gece kısık",
+  .flip_display = "Ekrani 180° döndür:"
 };
 
 // Swedish avoids å/Å on purpose: those glyphs are not in the generated fonts
@@ -362,7 +368,8 @@ static const LocalizedStrings strings_sv = {
     "autentiseringsuppgifter.",
   .language_label = "Sprak:",
   .weekdays = {"Sön", "Man", "Tis", "Ons", "Tor", "Fre", "Lör"},
-  .use_night_mode = "Nattdämpning"
+  .use_night_mode = "Nattdämpning",
+  .flip_display = "Vänd skärm 180°:"
 };
 
 static const LocalizedStrings strings_it = {
@@ -412,7 +419,8 @@ static const LocalizedStrings strings_it = {
     "riconfigurare le credenziali Wi-Fi.",
   .language_label = "Lingua:",
   .weekdays = {"Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"},
-  .use_night_mode = "Schermo notte"
+  .use_night_mode = "Schermo notte",
+  .flip_display = "Ruota schermo 180°:"
 };
 
 static const LocalizedStrings* get_strings(Language current_language) {

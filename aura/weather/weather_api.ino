@@ -90,9 +90,14 @@ void fetch_and_update_weather() {
       Serial.print("Updating time from NTP with UTC offset: ");
       Serial.println(utc_offset_seconds);
 
+      // Format floats with libc snprintf: LVGL's lv_snprintf (used by
+      // lv_label_set_text_fmt) has no %f support unless LV_SPRINTF_USE_FLOAT is set
       char unit = use_fahrenheit ? 'F' : 'C';
-      lv_label_set_text_fmt(lbl_today_temp, "%.0f°%c", t_now, unit);
-      lv_label_set_text_fmt(lbl_today_feels_like, "%s %.0f°%c", strings->feels_like_temp, t_ap, unit);
+      char buf[48];
+      snprintf(buf, sizeof(buf), "%.0f°%c", t_now, unit);
+      lv_label_set_text(lbl_today_temp, buf);
+      snprintf(buf, sizeof(buf), "%s %.0f°%c", strings->feels_like_temp, t_ap, unit);
+      lv_label_set_text(lbl_today_feels_like, buf);
       lv_img_set_src(img_today_icon, choose_image(code_now, is_day));
 
       JsonArray times = doc["daily"]["time"].as<JsonArray>();
@@ -113,9 +118,11 @@ void fetch_and_update_weather() {
         float mn = tmin[i].as<float>();
         float mx = tmax[i].as<float>();
 
-        lv_label_set_text_fmt(lbl_daily_day[i], "%s", dayStr);
-        lv_label_set_text_fmt(lbl_daily_high[i], "%.0f°%c", mx, unit);
-        lv_label_set_text_fmt(lbl_daily_low[i], "%.0f°%c", mn, unit);
+        lv_label_set_text(lbl_daily_day[i], dayStr);
+        snprintf(buf, sizeof(buf), "%.0f°%c", mx, unit);
+        lv_label_set_text(lbl_daily_high[i], buf);
+        snprintf(buf, sizeof(buf), "%.0f°%c", mn, unit);
+        lv_label_set_text(lbl_daily_low[i], buf);
         lv_img_set_src(img_daily[i], choose_icon(weather_codes[i].as<int>(), (i == 0) ? is_day : 1));
       }
 
@@ -140,8 +147,10 @@ void fetch_and_update_weather() {
         } else {
           lv_label_set_text(lbl_hourly[i], hour_name.c_str());
         }
-        lv_label_set_text_fmt(lbl_precipitation_probability[i], "%.0f%%", precipitation_probability);
-        lv_label_set_text_fmt(lbl_hourly_temp[i], "%.0f°%c", temp, unit);
+        snprintf(buf, sizeof(buf), "%.0f%%", precipitation_probability);
+        lv_label_set_text(lbl_precipitation_probability[i], buf);
+        snprintf(buf, sizeof(buf), "%.0f°%c", temp, unit);
+        lv_label_set_text(lbl_hourly_temp[i], buf);
         lv_img_set_src(img_hourly[i], choose_icon(hourly_weather_codes[i].as<int>(), hourly_is_day[i].as<int>()));
       }
     } else {
